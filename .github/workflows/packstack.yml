@@ -1,0 +1,43 @@
+name: deploy packstack
+on: [push, pull_request]
+
+env:
+
+  TESTS_TIMEOUT: 5 # in minutes
+
+jobs:
+  check:
+    name: build and deploy packstack
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v3
+    
+    - name: Build packstack container
+      run: |
+
+        cd ${GITHUB_WORKSPACE}/
+        docker build -t packstack .
+
+    - name: run packstack container
+      run: |
+        cd ${GITHUB_WORKSPACE}/
+        docker run --name packstack \
+          --tty  --cap-add ALL \
+          --privileged \
+          --security-opt seccomp=unconfined \
+           -v /lib/modules/:/lib/modules/ \
+           --cgroup-parent=docker.slice \
+          -v $(pwd):/src \
+          -d packstack 
+
+    - name: deploy packstack 
+      run: |
+        cd ${GITHUB_WORKSPACE}/
+        docker exec -t packstack bash -x /deploy-packstack.sh
+
+    - name: commit changes and list
+      run: |
+        docker commit packstack packstack-deployed
+        docker images

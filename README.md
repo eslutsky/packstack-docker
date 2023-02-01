@@ -1,0 +1,1 @@
+# running [packstack](https://github.com/redhat-openstack/packstack) services in docker privileged contain
