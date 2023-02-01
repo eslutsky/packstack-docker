@@ -1,1 +1,1 @@
-# running [packstack](https://github.com/redhat-openstack/packstack) services in docker privileged contain
+# this repo contains source code for  [packstack](https://github.com/redhat-openstack/packstack) image
