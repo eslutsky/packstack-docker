@@ -7,7 +7,7 @@
     docker exec -t packstack bash -x /deploy-packstack.sh
     docker commit packstack packstack-intalled
     ```
-    
+
 - running the packstack container: `hack/run.sh`
 - running services healthcheck
     ```
@@ -97,4 +97,19 @@
     | 4  | m1.large  |  8192 |   80 |         0 |     4 | True      |
     | 5  | m1.xlarge | 16384 |  160 |         0 |     8 | True      |
     +----+-----------+-------+------+-----------+-------+-----------+
+    ```
+
+## examples
+-  create cirros image and instance
+    ```shell
+
+    source hack/utils.sh
+    run_sh "wget https://download.cirros-cloud.net/0.6.1/cirros-0.6.1-x86_64-disk.img -O /tmp/cirros-0.6.1.img"
+    
+    openstack image create "cirros-0.6.1" --disk-format raw \
+    --container-format bare --public \
+    --file /tmp/cirros-0.6.1.img
+
+    openstack server create --image cirros-0.6.1 --flavor m1.tiny cirros
+    
     ```
