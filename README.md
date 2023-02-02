@@ -8,7 +8,7 @@
     docker commit packstack packstack-intalled
     ```
 
-- running the packstack container: `hack/run.sh`
+
 - running services healthcheck
     ```
     source hack/utils.sh ; run_command healthcheck
@@ -85,9 +85,20 @@
 
     ```
 
-- running openstack CLI inside a container
+## examples
+
+- running the packstack container: `hack/run.sh`
+- ruuning openstack CLI from the host (using tcp exposed  ports)
     ```
-    source hack/utils.sh ; openstack flavor list
+    source hack/utils.sh
+    source_keystonerc
+    openstack flavor list
+    ```
+
+- running openstack CLI from a container
+    ```
+    source hack/utils.sh
+    openstack_container flavor list
     +----+-----------+-------+------+-----------+-------+-----------+
     | ID | Name      |   RAM | Disk | Ephemeral | VCPUs | Is Public |
     +----+-----------+-------+------+-----------+-------+-----------+
@@ -99,7 +110,7 @@
     +----+-----------+-------+------+-----------+-------+-----------+
     ```
 
-## examples
+
 -  create cirros image and instance
     ```shell
 

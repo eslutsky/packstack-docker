@@ -12,10 +12,22 @@ function healthcheck {
    done
 }
 
-function run_sh {
-    command=$1
-    docker exec -i ${container_name} $command
+function source_keystonerc {
+    docker cp ${container_name}:/root/keystonerc_admin keystonerc_admin
+    source keystonerc_admin
+    rm -rf keystonerc_admin
 }
+function openstack_wrapper {
+    command=$@
+    cat<<EOF >/tmp/test.cmd
+    #!/bin/bash
+    source /root/keystonerc_admin
+    openstack ${command}
+EOF
+docker cp /tmp/test.cmd ${container_name}:/test.sh
+docker exec -i ${container_name} bash /test.sh
+}
+
 
 function run_command {
     command=$1
@@ -26,11 +38,9 @@ $command
 EOF
 }
 
-function openstack {
+function openstack_container {
     command=$@
-	run_sh bash<<EOF
-source /root/keystonerc_admin
-openstack "$command"
-EOF
+
+    openstack_wrapper "$command"
 }
 
