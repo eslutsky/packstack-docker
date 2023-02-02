@@ -30,7 +30,7 @@ docker exec -i ${container_name} bash /test.sh
 
 
 function run_command {
-    command=$1
+    command=$@
     docker cp hack/utils.sh ${container_name}:/utils.sh 
     docker exec -i ${container_name} bash<<EOF
 source /utils.sh

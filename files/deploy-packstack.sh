@@ -1,5 +1,9 @@
 #!/bin/bash
 
+#TBD make sure systemctl finished loading ssh
+#workaround
+sleep 10
+
 #set the correct IP address
 packstack --answer-file=/packstack.answer
 
