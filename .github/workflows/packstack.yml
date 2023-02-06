@@ -27,6 +27,7 @@ jobs:
           --tty  --cap-add ALL \
           --privileged \
           --security-opt seccomp=unconfined \
+           -v /dev/cinder-volumes:/dev/cinder-volumes \
            -v /lib/modules/:/lib/modules/ \
            --cgroup-parent=docker.slice \
           -v $(pwd):/src \
@@ -36,6 +37,7 @@ jobs:
       run: |
         cd ${GITHUB_WORKSPACE}/
         docker exec -t packstack bash -x /deploy-packstack.sh
+        docker exec -t packstack bash -x /create-volume.sh
 
     - name: commit changes and list
       run: |

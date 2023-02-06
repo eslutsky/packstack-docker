@@ -24,6 +24,7 @@ RUN systemctl enable sshd
 ADD files/packstack.answer /packstack.answer
 ADD files/auditd.service /usr/lib/systemd/system/auditd.service
 ADD files/deploy-packstack.sh /deploy-packstack.sh
+ADD files/create-volume.sh /create-volume.sh
 ADD files/create-cirros.sh /create-cirros.sh
 # Copy fake audit service config /usr/lib/systemd/system/auditd.service
 

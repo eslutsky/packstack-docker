@@ -1,6 +1,7 @@
 #!/bin/bash
 
 docker run -d --rm --name packstack  \
+-v /dev/cinder-volumes:/dev/cinder-volumes \
 -v /lib/modules/:/lib/modules/ \
 --privileged --cap-add ALL --security-opt seccomp=unconfined   --cgroup-parent=docker.slice \
 -p 0.0.0.0:5000:5000 \
@@ -9,4 +10,4 @@ docker run -d --rm --name packstack  \
 -p 0.0.0.0:8778:8778 \
 -p 0.0.0.0:9292:9292 \
 -p 0.0.0.0:9696:9696 \
-quay.io/eslutsky/packstack:latest
+packstack:latest

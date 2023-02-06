@@ -22,7 +22,7 @@ CONFIG_MARIADB_INSTALL=y
 CONFIG_GLANCE_INSTALL=y
 
 # Specify 'y' to install OpenStack Block Storage (cinder). ['y', 'n']
-CONFIG_CINDER_INSTALL=n
+CONFIG_CINDER_INSTALL=y
 
 # Specify 'y' to install OpenStack Shared File System (manila). ['y',
 # 'n']
@@ -518,7 +518,7 @@ CONFIG_CINDER_VOLUME_NAME=cinder-volumes
 # of the volume group will restrict the amount of disk space that you
 # can expose to Compute instances, and that the specified amount must
 # be available on the device used for /var/lib/cinder.
-CONFIG_CINDER_VOLUMES_SIZE=20G
+CONFIG_CINDER_VOLUMES_SIZE=4G
 
 # A single or comma-separated list of NFS exports to mount. Example:
 # 'ip-address:/export-name'
@@ -1235,7 +1235,7 @@ CONFIG_CEILOMETER_SERVICE_NAME=httpd
 
 # Backend driver for Telemetry's group membership coordination.
 # ['redis', 'none']
-CONFIG_CEILOMETER_COORDINATION_BACKEND=redis
+CONFIG_CEILOMETER_COORDINATION_BACKEND=none
 
 # Whether to enable ceilometer middleware in swift proxy. By default
 # this should be false to avoid unnecessary load.
