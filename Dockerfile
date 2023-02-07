@@ -17,7 +17,7 @@ RUN dnf update -y
 RUN dnf config-manager --enable powertools
 RUN dnf install -y centos-release-openstack-yoga
 RUN dnf install -y openstack-packstack net-tools iproute
-RUN dnf install -y openssh-server procps-ng audit policycoreutils kmod wget
+RUN dnf install -y openssh-server procps-ng audit policycoreutils kmod wget lvm2
 RUN systemctl enable sshd
 
 # Copy answer file
