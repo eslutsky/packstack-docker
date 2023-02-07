@@ -10,5 +10,6 @@ openstack volume list
 vgdisplay
 lvdisplay
 
-systemctl status openstack-losetup.service
+#systemctl status openstack-losetup.service
+cat /var/log/cinder/volume.log
 

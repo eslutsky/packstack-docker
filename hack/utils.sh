@@ -1,5 +1,24 @@
 container_name="packstack"
 
+function lv_create {
+    size=$1
+    loopdev=$(losetup -f)
+    dd if=/dev/zero of=/tmp/cinder-volumes bs=1 count=0 seek=${size}G
+    losetup ${loopdev} /tmp/cinder-volumes
+    pvcreate ${loopdev}
+    vgcreate cinder-volumes ${loopdev}
+    lvcreate -T -L 2g cinder-volumes/cinder-volumes-pool
+}
+
+function lv_remove {
+    lvremove cinder-volumes/cinder-volumes-pool -y
+    for pv in $(pvdisplay -qC | grep dev | awk -e '{print $1}') ; do pvremove $pv --force --force -y ; done
+    pvremove cinder-volumes -y
+    vgremove cinder-volumes -y
+    rm -rf /dev/cinder-volumes
+    rm -rf /tmp/cinder-volumes
+}
+
 function get_osp_services {
    systemctl | grep -P "neutr|openstack|mariadb|glance|rabbit|libv|httpd" | awk '{print $1}'
 }
