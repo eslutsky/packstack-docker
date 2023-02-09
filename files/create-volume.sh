@@ -4,12 +4,15 @@ source /root/keystonerc_admin
 
 nova-manage cell_v2 discover_hosts
 
-openstack volume create --size 1 cirros_root_disk
-sleep 20
-openstack volume list 
-vgdisplay
-lvdisplay
+# create cinder empty volume
+openstack volume create --size 1 empty_volume
 
-#systemctl status openstack-losetup.service
-cat /var/log/cinder/volume.log
+# create cinder volume from image
+openstack volume create --image cirros --size 1 cirros-volume
+
+# boot VM instance from volume
+openstack server create --flavor m1.tiny --volume cirros-volume cirros-volume
+sleep 5
+openstack volume list 
+
 

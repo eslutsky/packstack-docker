@@ -5,6 +5,12 @@ set -e
 #workaround
 sleep 10
 
+
+# forward NFS to upstream host
+#sed -i  "s/NFS_IP_ADDRESS/${EXTERNAL_IP}/g" /packstack.answer
+sed -i  "s/NFS_IP_ADDRESS/127.0.0.1/g" /packstack.answer
+
+cat /packstack.answer | grep CONFIG_CINDER_NFS_MOUNTS
 #set the correct IP address
 packstack --answer-file=/packstack.answer
 

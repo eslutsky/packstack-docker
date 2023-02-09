@@ -17,15 +17,20 @@ RUN dnf update -y
 RUN dnf config-manager --enable powertools
 RUN dnf install -y centos-release-openstack-yoga
 RUN dnf install -y openstack-packstack net-tools iproute
-RUN dnf install -y openssh-server procps-ng audit policycoreutils kmod wget lvm2
+RUN dnf install -y openssh-server procps-ng audit policycoreutils kmod wget lvm2 socat
 RUN systemctl enable sshd
+
 
 # Copy answer file
 ADD files/packstack.answer /packstack.answer
 ADD files/auditd.service /usr/lib/systemd/system/auditd.service
+
 ADD files/deploy-packstack.sh /deploy-packstack.sh
 ADD files/create-volume.sh /create-volume.sh
 ADD files/create-cirros.sh /create-cirros.sh
+ADD files/socat-nfs.service /usr/lib/systemd/system/socat-nfs.service
+ADD files/run_socat.sh /run_socat.sh
+RUN systemctl enable socat-nfs
 # Copy fake audit service config /usr/lib/systemd/system/auditd.service
 
 VOLUME [ "/tmp", "/run", "/run/lock" ]

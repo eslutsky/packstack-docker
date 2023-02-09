@@ -20,20 +20,40 @@ jobs:
         cd ${GITHUB_WORKSPACE}/
         docker build -t packstack .
 
+    - name: install NFS server
+      run: |
+
+        sudo apt install nfs-kernel-server -y
+        sudo mkdir -p /home/nfsshare
+        sudo chown -R nobody:nogroup /home/nfsshare
+        sudo chmod 777 /home/nfsshare
+        sudo bash -c 'echo "/home/nfsshare  *(insecure,rw,no_root_squash)" >>/etc/exports'
+        sudo exportfs -a
+        sudo systemctl restart nfs-kernel-server
+        sleep 4
+       
+
     - name: run packstack container
       run: |
         cd ${GITHUB_WORKSPACE}/
-        sudo bash -c "source hack/utils.sh ; lv_create 4 "
+
+        export ext_ip=$(ip route get 8.8.8.8 | awk '{ print $7 }' | head -1)
+        mkdir -p artifacts/
 
         docker run --name packstack \
           --tty  --cap-add ALL \
           --privileged \
           --security-opt seccomp=unconfined \
            -v /lib/modules/:/lib/modules/ \
+           -v $(pwd)/artifacts:/var/tmp/packstack/ \
            --cgroup-parent=docker.slice \
+          -e EXTERNAL_IP="$ext_ip" \
           -v $(pwd):/src \
           -d packstack 
+        
+        sleep 3
 
+     
     - name: deploy packstack 
       run: |
         cd ${GITHUB_WORKSPACE}/
@@ -49,3 +69,11 @@ jobs:
         docker tag packstack-deployed quay.io/eslutsky/packstack:latest
         echo ${{ secrets.QUAY_PASSWORD }} | docker login -u ${{ secrets.QUAY_USERNAME }} --password-stdin quay.io
         docker push quay.io/eslutsky/packstack:latest
+
+
+    - name: Use the Upload Artifact GitHub Action
+      if: always()
+      uses: actions/upload-artifact@v2
+      with: 
+        name: assets-for-download
+        path: ${GITHUB_WORKSPACE}/artifacts      

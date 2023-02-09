@@ -1,0 +1,18 @@
+# /etc/systemd/system/socat-nfs.service
+[Unit]
+Description=socat-nfs
+After=local-fs.target
+Requires=
+
+[Service]
+EnvironmentFile=/proc/1/environ
+Type=simple
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=socat-nfs
+
+ExecStart=/run_socat.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

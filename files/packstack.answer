@@ -500,7 +500,7 @@ CONFIG_CINDER_KS_PW=PW_PLACEHOLDER
 # Storage backend to use for the Block Storage service; valid options
 # are: lvm, nfs, vmdk, netapp, solidfire. ['lvm', 'nfs', 'vmdk',
 # 'netapp', 'solidfire']
-CONFIG_CINDER_BACKEND=lvm
+CONFIG_CINDER_BACKEND=nfs
 
 # Specify 'y' to create the Block Storage volumes group. That is,
 # Packstack creates a raw disk image in /var/lib/cinder, and mounts it
@@ -522,7 +522,7 @@ CONFIG_CINDER_VOLUMES_SIZE=4G
 
 # A single or comma-separated list of NFS exports to mount. Example:
 # 'ip-address:/export-name'
-CONFIG_CINDER_NFS_MOUNTS=
+CONFIG_CINDER_NFS_MOUNTS=NFS_IP_ADDRESS:/home/nfsshare
 
 # Administrative user account name used to access the NetApp storage
 # system or proxy server.
