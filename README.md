@@ -1,3 +1,8 @@
+
+
+# Archived - this repo moved to https://github.com/kubev2v/packstack-img 
+
+
 # this repo contains source code for building [packstack](https://github.com/redhat-openstack/packstack) container using docker
 
 - build the container from src
